@@ -54,11 +54,13 @@ export default function JoinScreen({ navigation }: Props) {
               <TextInput style={styles.input} value={relay} onChangeText={setRelay}
                 placeholder="ws://192.168.x.x:8080" placeholderTextColor={colors.textMuted}
                 autoCapitalize="none" autoCorrect={false} keyboardType="url" />
+              <Text style={styles.hint}>The address of your class relay server. Moiz will share it.</Text>
 
               <Text style={styles.label}>CLASS CODE (IF REQUIRED)</Text>
               <TextInput style={styles.input} value={code} onChangeText={setCode}
                 placeholder="Room code" placeholderTextColor={colors.textMuted}
                 autoCapitalize="none" autoCorrect={false} />
+              <Text style={styles.hint}>A shared password for your class. Leave empty if none was given.</Text>
 
               <View style={styles.statusRow}>
                 <View style={[styles.dot, { backgroundColor: connecting ? colors.accent : colors.textMuted }]} />
@@ -91,4 +93,5 @@ const styles = StyleSheet.create({
   status: { color: colors.textMuted, fontSize: 13 },
   device: { color: colors.textMuted, fontSize: 11, marginTop: 6 },
   error: { color: colors.expire, fontSize: 13, marginTop: 12 },
+  hint: { color: colors.textMuted, fontSize: 11, marginTop: 6, lineHeight: 15 },
 });
