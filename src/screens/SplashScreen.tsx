@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withDelay, withTiming, Easing } from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Background from '../components/Background';
 import { LogoMark } from '../components/Logo';
+import { useChat } from '../context/ChatContext';
 import { RootStackParamList } from '../navigation/types';
 import { colors } from '../theme/colors';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
 
 export default function SplashScreen({ navigation }: Props) {
+  const { ready, hasProfile } = useChat();
   const logo = useSharedValue(0);
   const word = useSharedValue(0);
   const tag = useSharedValue(0);
@@ -19,9 +21,13 @@ export default function SplashScreen({ navigation }: Props) {
     logo.value = withTiming(1, { duration: 700, easing: ease });
     word.value = withDelay(300, withTiming(1, { duration: 700, easing: ease }));
     tag.value = withDelay(700, withTiming(1, { duration: 700, easing: ease }));
-    const t = setTimeout(() => navigation.replace('Join'), 2200);
+  }, [logo, word, tag]);
+
+  useEffect(() => {
+    if (!ready) return;
+    const t = setTimeout(() => navigation.replace(hasProfile ? 'Chat' : 'Join'), 1800);
     return () => clearTimeout(t);
-  }, [navigation, logo, word, tag]);
+  }, [ready, hasProfile, navigation]);
 
   const logoStyle = useAnimatedStyle(() => ({
     opacity: logo.value, transform: [{ scale: 0.7 + 0.3 * logo.value }],

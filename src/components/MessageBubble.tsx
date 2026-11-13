@@ -16,9 +16,11 @@ const STATUS_LABEL: Record<MessageStatus, string> = {
   DROPPED: 'Not delivered',
 };
 
-export default function MessageBubble({ message, mine }: { message: Message; mine: boolean }) {
-  const hasTimer = message.expires_at !== null;
-  const shownTime = message.sent_at ?? Date.now();
+export default function MessageBubble({ message, mine }: { message: Message & { created_at?: number }; mine: boolean })  {
+  
+  const hasTimer = message.expires_at !== null && message.status !== 'DROPPED';
+  const shownTime = message.sent_at ?? message.created_at ?? Date.now();
+  
   return (
     <View style={[styles.row, mine ? styles.rowMine : styles.rowOther]}>
       <View style={[styles.bubble, mine ? styles.mine : styles.other]}>
